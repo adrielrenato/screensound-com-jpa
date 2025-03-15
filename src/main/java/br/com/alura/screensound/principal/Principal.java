@@ -4,6 +4,7 @@ import br.com.alura.screensound.model.Artista;
 import br.com.alura.screensound.model.Musica;
 import br.com.alura.screensound.model.TipoArtista;
 import br.com.alura.screensound.repository.ArtistaRepository;
+import br.com.alura.screensound.service.ConsultaChatGPT;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,14 +62,22 @@ public class Principal {
     }
 
     private void pesquisarDadosDoArtista() {
+        System.out.println("Pesquidar dados de qual artista: ");
+        var nomeArtista = leitura.nextLine();
+        var resposta = ConsultaChatGPT.obterInformacao(nomeArtista);
+        System.out.println(resposta.trim());
     }
 
     private void buscarMusicasPorArtista() {
+        System.out.println("Buscar musicas de qual artista");
+        var nomeArtista = leitura.nextLine();
+        List<Musica> musicas = repositorio.buscaMusicaPorArtista(nomeArtista);
+        musicas.forEach(System.out::println);
     }
 
     private void listarMusicas() {
         List<Artista> artistas = repositorio.findAll();
-        artistas.forEach(System.out::println);
+        artistas.forEach(a -> a.getMusicas().forEach(System.out::println));
     }
 
     private void cadastrarMusiscas() {
